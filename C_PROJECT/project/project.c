@@ -332,9 +332,13 @@ int main (void)
 
 	while (1)
 	{
-		printf ("1. Add Student\n2. Display Students\n3. Search Student by ID\n"
-				"4. Update Student Information\n5. Delete Student\n"
-				"6. Calculate Average GPA\n7. Search for Student with Highest GPA\n"
+		printf ("1. Add Student\n"
+				"2. Display Students\n"
+				"3. Search Student by ID\n"
+				"4. Update Student Information\n"
+				"5. Delete Student\n"
+				"6. Calculate Average GPA\n"
+				"7. Search for Student with Highest GPA\n"
 				"8. Exit\nEnter Choice: ");
 		scanf ("%d", &choice);
 		DASHLINE;
@@ -365,24 +369,30 @@ int main (void)
 				break;
 
 			case SEARCH_STUDENT_BY_ID:
+			{
 				int id_for_search;
 				printf ("Enter ID to search for a Student: ");
 				scanf ("%d", &id_for_search);
 				searchStudentByID(id_for_search);
+			}
 				break;
 
 			case UPDATE_STUDENT:
+			{
 				int id_for_update;
 				printf ("Enter Student ID to update its information: ");
 				scanf ("%d", &id_for_update);
 				updateStudent(id_for_update);
+			}
 				break;
 
 			case DELETE_STUDENT:
+			{
 				int id_for_delete;
 				printf ("Enter Student ID to delete its data: ");
 				scanf ("%d", &id_for_delete);
 				deleteStudent(id_for_delete);
+			}
 				break;
 
 			case CALCULATE_AVERAGE_GPA:
