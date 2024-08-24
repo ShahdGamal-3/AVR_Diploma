@@ -8,18 +8,23 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <assert.h>
-#include <string.h>
 
-#define ADD_STUDENT 1
-#define DISPLAY_STUDENTS 2
-#define SEARCH_STUDENT_BY_ID 3
-#define UPDATE_STUDENT 4
-#define DELETE_STUDENT 5
-#define CALCULATE_AVERAGE_GPA 6
-#define SEARCH_HIGHEST_GPA 7
-#define EXIT 8
-
+// Macro to print a dashed line for consistent output formatting
 #define DASHLINE printf("--------------------------------------------------\n")
+#define SPACE_DASHLINE printf("           ------------------------\n")
+
+// Enumeration for user choices in the menu
+enum choose_function
+{
+	ADD_STUDENT=1,
+	DISPLAY_STUDENTS,
+	SEARCH_STUDENT_BY_ID,
+	UPDATE_STUDENT,
+	DELETE_STUDENT,
+	CALCULATE_AVERAGE_GPA,
+	SEARCH_HIGHEST_GPA,
+	EXIT
+};
 
 // Define a structure to store student information
 struct student
@@ -104,8 +109,10 @@ void displayStudents (void)
 	while (head_copy != NULL)
 	{
 		printf ("[ ID: %d, Name: %s, Age: %d, GPA: %.2f ]\n",
-				head_copy->data.id, head_copy->data.name,
-				head_copy->data.age, head_copy->data.gpa);
+				head_copy->data.id,
+				head_copy->data.name,
+				head_copy->data.age,
+				head_copy->data.gpa);
 		head_copy = head_copy->next;
 	}
 	DASHLINE;
@@ -118,12 +125,7 @@ void displayStudents (void)
 void searchStudentByID (int id)
 {
 	struct node *head_copy = head;
-	if (head == NULL)
-	{
-		printf ("Student with ID %d is not found\n", id);
-		DASHLINE;
-		return;
-	}
+
 	// Traverse the list to find the student by ID
 	while (head_copy != NULL)
 	{
@@ -152,13 +154,7 @@ void searchStudentByID (int id)
 void updateStudent (int id)
 {
 	struct node *head_copy = head;
-	if (head == NULL)
-	{
-		DASHLINE;
-		printf ("Student with ID %d is not found\n", id);
-		DASHLINE;
-		return;
-	}
+
 	// Traverse the list to find the student by ID
 	while (head_copy != NULL)
 	{
@@ -196,14 +192,6 @@ void deleteStudent (int id)
 	struct node *previous = head;
 	struct node *current = head->next;
 	struct node *deleted_node = head;
-
-	if (head == NULL)
-	{
-		DASHLINE;
-		printf ("Student with ID %d is not found\n", id);
-		DASHLINE;
-		return;
-	}
 
 	// Check if the student to delete is the head
 	if (head->data.id == id)
@@ -266,13 +254,6 @@ void searchHighestGPA (void)
 	struct node *HighestGPA_student = head;
 	float HighestGPA = head_copy->data.gpa;
 
-	if (head == NULL)
-	{
-		DASHLINE;
-		printf ("There are no students\n");
-		DASHLINE;
-		return;
-	}
 	// Traverse the list to find the student with the highest GPA
 	while (head_copy != NULL)
 	{
@@ -287,8 +268,10 @@ void searchHighestGPA (void)
 	// Display the student with the highest GPA
 	printf ("Student with the highest GPA:\n");
 	printf ("[ ID: %d, Name: %s, Age: %d, GPA: %.2f ]\n",
-			HighestGPA_student->data.id, HighestGPA_student->data.name,
-			HighestGPA_student->data.age, HighestGPA_student->data.gpa);
+			HighestGPA_student->data.id,
+			HighestGPA_student->data.name,
+			HighestGPA_student->data.age,
+			HighestGPA_student->data.gpa);
 	DASHLINE;
 }
 
@@ -299,14 +282,12 @@ void freeList(void)
 {
 	struct node *current = head;
 	struct node *next;
-
 	while (current != NULL)
 	{
 		next = current->next;
 		free(current);
 		current = next;
 	}
-
 	head = NULL; // Reset the head to NULL after freeing the list
 }
 
@@ -316,7 +297,7 @@ void freeList(void)
 void Exit(void)
 {
 	freeList(); // Free all nodes in the linked list
-	printf("Exit\n");
+	printf("                      Exit\n");
 	exit(0);
 }
 
@@ -328,85 +309,127 @@ int main (void)
 {
 	setvbuf(stdout, NULL, _IONBF, 0);
 	setvbuf(stderr, NULL, _IONBF, 0);
-	int choice;
+	enum choose_function choice;
 
 	while (1)
 	{
-		printf ("1. Add Student\n"
-				"2. Display Students\n"
+		printf ("1. Add Student\n2. Display Students\n"
 				"3. Search Student by ID\n"
 				"4. Update Student Information\n"
 				"5. Delete Student\n"
 				"6. Calculate Average GPA\n"
 				"7. Search for Student with Highest GPA\n"
 				"8. Exit\nEnter Choice: ");
-		scanf ("%d", &choice);
+		scanf ("%d", (int*)&choice);
 		DASHLINE;
 
 		// Process the user's choice
 		switch (choice)
 		{
-			case ADD_STUDENT:
-			{
-				struct student *new_student = (struct student*) malloc (sizeof(struct student));
-				assert (new_student != NULL);
-				printf ("Enter student ID: ");
-				scanf ("%d", &new_student->id);
-				while (getchar() != '\n');
-				printf ("Enter name: ");
-				gets (new_student->name);
-				printf ("Enter age: ");
-				scanf ("%d", &new_student->age);
-				printf ("Enter GPA: ");
-				scanf ("%f", &new_student->gpa);
-				addStudent(new_student);
-				free (new_student);
-			}
-				break;
+		case ADD_STUDENT:
+		{
+			printf("                 ADD_STUDENT\n");
+			SPACE_DASHLINE;
+			struct student *new_student = (struct student*) malloc (sizeof(struct student));
+			assert (new_student != NULL);
+			printf ("Enter student ID: ");
+			scanf ("%d", &new_student->id);
+			while (getchar() != '\n');
+			printf ("Enter name: ");
+			gets (new_student->name);
+			printf ("Enter age: ");
+			scanf ("%d", &new_student->age);
+			printf ("Enter GPA: ");
+			scanf ("%f", &new_student->gpa);
+			addStudent(new_student);
+			free (new_student);
+		}
+			break;
 
-			case DISPLAY_STUDENTS:
-				displayStudents();
-				break;
+		case DISPLAY_STUDENTS:
+			printf("               DISPLAY_STUDENTS\n");
+			SPACE_DASHLINE;
 
-			case SEARCH_STUDENT_BY_ID:
-			{
-				int id_for_search;
-				printf ("Enter ID to search for a Student: ");
-				scanf ("%d", &id_for_search);
-				searchStudentByID(id_for_search);
-			}
-				break;
+			displayStudents();
+			break;
 
-			case UPDATE_STUDENT:
-			{
-				int id_for_update;
-				printf ("Enter Student ID to update its information: ");
-				scanf ("%d", &id_for_update);
-				updateStudent(id_for_update);
-			}
-				break;
+		case SEARCH_STUDENT_BY_ID:
+		{
+			int id_for_search;
+			printf("             SEARCH_STUDENT_BY_ID\n");
+			SPACE_DASHLINE;
+			if (head == NULL)
+				{
+				    printf ("No students are present\n");
+					DASHLINE;
+					break;
+				}
+			printf ("Enter ID to search for a Student: ");
+			scanf ("%d", &id_for_search);
+			searchStudentByID(id_for_search);
+		}
+			break;
 
-			case DELETE_STUDENT:
-			{
-				int id_for_delete;
-				printf ("Enter Student ID to delete its data: ");
-				scanf ("%d", &id_for_delete);
-				deleteStudent(id_for_delete);
-			}
-				break;
+		case UPDATE_STUDENT:
+		{
+			int id_for_update;
+			printf("                UPDATE_STUDENT\n");
+			SPACE_DASHLINE;
+			if (head == NULL)
+				{
+					printf ("No students are present\n");
+					DASHLINE;
+					break;
+				}
+			printf ("Enter Student ID to update its information: ");
+			scanf ("%d", &id_for_update);
+			updateStudent(id_for_update);
+		}
+			break;
 
-			case CALCULATE_AVERAGE_GPA:
-				printf ("Average GPA = %f\n", calculateAverageGPA());
-				DASHLINE;
-				break;
+		case DELETE_STUDENT:
+		{
+			int id_for_delete;
+			printf("                DELETE_STUDENT\n");
+			SPACE_DASHLINE;
+			if (head == NULL)
+				{
+					printf ("No students are present\n");
+					DASHLINE;
+					break;
+				}
+			printf ("Enter Student ID to delete its data: ");
+			scanf ("%d", &id_for_delete);
+			deleteStudent(id_for_delete);
+		}
+			break;
 
-			case SEARCH_HIGHEST_GPA:
-				searchHighestGPA();
-				break;
+		case CALCULATE_AVERAGE_GPA:
+			printf("            CALCULATE_AVERAGE_GPA\n");
+			SPACE_DASHLINE;
+			printf ("Average GPA = %f\n", calculateAverageGPA());
+			DASHLINE;
+			break;
 
-			case EXIT:
-				Exit();
-				break;
+		case SEARCH_HIGHEST_GPA:
+			printf("              SEARCH_HIGHEST_GPA\n");
+			SPACE_DASHLINE;
+			if (head == NULL)
+				{
+					printf ("No students are present\n");
+					DASHLINE;
+					break;
+				}
+			searchHighestGPA();
+			break;
+
+		case EXIT:
+			Exit();
+			break;
+
+		default:
+			printf ("Not allowed choice !!\n");
+			DASHLINE;
 		}
 	}
 	return 0;
